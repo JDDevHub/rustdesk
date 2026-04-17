@@ -33,6 +33,15 @@ pub fn core_main() -> Option<Vec<String>> {
         return None;
     }
     crate::load_custom_client();
+    // U-SUN Remote Support: Auto-configure server and permanent password
+    {
+        let _ = config::Config::set_option("custom-rendezvous-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
+            config::Config::set_option("rendezvous-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
+            config::Config::set_option("relay-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
+        if !crate::ui_interface::is_permanent_password_set() {
+            crate::ui_interface::set_permanent_password_with_result("%uSunRDsup9723%".to_owned());
+        }
+    }
     #[cfg(windows)]
     if !crate::platform::windows::bootstrap() {
         // return None to terminate the process
