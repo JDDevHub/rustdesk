@@ -256,6 +256,7 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Build msi
+        continue-on-error: true
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
           pushd ./res/msi
@@ -273,7 +274,7 @@ jobs:
 
       - name: Upload portable exe artifact
         uses: actions/upload-artifact@v4
-        if: env.UPLOAD_ARTIFACT == 'true'
+        if: always() && env.UPLOAD_ARTIFACT == 'true'
         with:
           name: usunRS-portable-windows-${{ matrix.job.arch }}
           path: ./SignOutput/rustdesk-*.exe
