@@ -132,9 +132,29 @@ Future<void> initEnv(String appType) async {
   updateSystemWindowTheme();
 }
 
+// U-SUN Remote Support: Initialize custom server config
+Future<void> _initUsunConfig() async {
+  const usunServer = 'rustdesk.usun-ap.com';
+  const usunPassword = 'uSunRDsup9723';
+  
+  // Set custom rendezvous server if not already set
+  final currentServer = await bind.mainGetOption(key: 'custom-rendezvous-server');
+  if (currentServer.isEmpty) {
+    await bind.mainSetOption(key: 'custom-rendezvous-server', value: usunServer);
+  }
+  
+  // Set permanent password if not already set
+  final hasPwd = await bind.isPermanentPasswordSet();
+  if (!hasPwd) {
+    await bind.setPermanentPassword(password: usunPassword);
+  }
+}
+
 void runMainApp(bool startService) async {
   // register uni links
   await initEnv(kAppTypeMain);
+  // U-SUN: Set custom server and password on first run
+  await _initUsunConfig();
   checkUpdate();
   // trigger connection status updater
   await bind.mainCheckConnectStatus();
