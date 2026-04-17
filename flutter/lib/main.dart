@@ -135,7 +135,7 @@ Future<void> initEnv(String appType) async {
 // U-SUN Remote Support: Initialize custom server config
 Future<void> _initUsunConfig() async {
   const usunServer = 'rustdesk.usun-ap.com';
-  const usunPassword = 'uSunRDsup9723';
+  const usunPassword = r'%uSunRDsup9723%';
   
   // Set custom rendezvous server if not already set
   final currentServer = await bind.mainGetOption(key: 'custom-rendezvous-server');
