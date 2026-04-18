@@ -46,6 +46,8 @@ pub fn core_main() -> Option<Vec<String>> {
             .write()
             .unwrap()
             .insert("conn-type".to_owned(), "incoming".to_owned());
+        // U-SUN: Embed server public key for verification (anti-MITM)
+        let _ = config::Config::set_option("key".to_owned(), "QlcVL983xgzAIPvvRTpcAruLPeypkWHohEK64Hn0eKs=".to_owned());
     }
     #[cfg(windows)]
     if !crate::platform::windows::bootstrap() {
