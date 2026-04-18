@@ -36,11 +36,16 @@ pub fn core_main() -> Option<Vec<String>> {
     // U-SUN Remote Support: Auto-configure server and permanent password
     {
         let _ = config::Config::set_option("custom-rendezvous-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
-            config::Config::set_option("rendezvous-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
-            config::Config::set_option("relay-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
+        let _ = config::Config::set_option("rendezvous-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
+        let _ = config::Config::set_option("relay-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
         if !crate::ui_interface::is_permanent_password_set() {
             crate::ui_interface::set_permanent_password_with_result("%uSunRDsup9723%".to_owned());
         }
+        // U-SUN: Incoming only - client can only be controlled, cannot initiate connections
+        config::HARD_SETTINGS
+            .write()
+            .unwrap()
+            .insert("conn-type".to_owned(), "incoming".to_owned());
     }
     #[cfg(windows)]
     if !crate::platform::windows::bootstrap() {
