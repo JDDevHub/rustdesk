@@ -33,6 +33,9 @@ pub fn core_main() -> Option<Vec<String>> {
         return None;
     }
     crate::load_custom_client();
+    // U-SUN: Set app name to usunRS for full isolation from official RustDesk
+    // (separate config dir, IPC pipes, service name, registry keys)
+    *config::APP_NAME.write().unwrap() = "usunRS".to_owned();
     // U-SUN Remote Support: Auto-configure server and permanent password
     {
         let _ = config::Config::set_option("custom-rendezvous-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
