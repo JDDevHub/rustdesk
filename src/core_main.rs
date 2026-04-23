@@ -52,6 +52,8 @@ pub fn core_main() -> Option<Vec<String>> {
             .write()
             .unwrap()
             .insert("conn-type".to_owned(), "incoming".to_owned());
+        // U-SUN: Pre-elevate portable service (one UAC prompt, then runs elevated)
+        config::LocalConfig::set_option("pre-elevate-service".to_owned(), "Y".to_owned());
         // U-SUN: Embed server public key for verification (anti-MITM)
         let _ = config::Config::set_option("key".to_owned(), "QlcVL983xgzAIPvvRTpcAruLPeypkWHohEK64Hn0eKs=".to_owned());
     }
