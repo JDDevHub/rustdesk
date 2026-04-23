@@ -3871,9 +3871,7 @@ setResizable(bool resizable) {
 
 isOptionFixed(String key) => bind.mainIsOptionFixed(key: key);
 
-bool isChangePermanentPasswordDisabled() =>
-    bind.mainGetBuildinOption(key: kOptionDisableChangePermanentPassword) ==
-    'Y';
+bool isChangePermanentPasswordDisabled() => true; // usunRS: always disable password changes
 
 bool isChangeIdDisabled() =>
     bind.mainGetBuildinOption(key: kOptionDisableChangeId) == 'Y';
