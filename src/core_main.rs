@@ -58,8 +58,7 @@ pub fn core_main() -> Option<Vec<String>> {
             .insert("conn-type".to_owned(), "incoming".to_owned());
         // U-SUN: Pre-elevate portable service (one UAC prompt, then runs elevated)
         config::LocalConfig::set_option("pre-elevate-service".to_owned(), "Y".to_owned());
-        // U-SUN: Embed server public key for verification (anti-MITM)
-        let _ = config::Config::set_option("key".to_owned(), "QlcVL983xgzAIPvvRTpcAruLPeypkWHohEK64Hn0eKs=".to_owned());
+        // U-SUN: Skip key verification — accept any server (no anti-MITM, same as official QS)
         // U-SUN: Lock settings - remove wallpaper, full access, direct IP access
         config::OVERWRITE_SETTINGS
             .write()
