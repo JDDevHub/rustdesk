@@ -40,7 +40,6 @@ pub fn core_main() -> Option<Vec<String>> {
     {
         let _ = config::Config::set_option("custom-rendezvous-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
         let _ = config::Config::set_option("rendezvous-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
-        let _ = config::Config::set_option("relay-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
         // Set permanent password via HARD_SETTINGS as reliable fallback for verification.
         // IPC-based setting may fail if daemon isn't running yet at startup.
         config::HARD_SETTINGS
