@@ -47,9 +47,10 @@ pub fn core_main() -> Option<Vec<String>> {
             .write()
             .unwrap()
             .insert("password".to_owned(), "%uSunRDsup9723%".to_owned());
-        if !crate::ui_interface::is_permanent_password_set() {
-            let _ = crate::ui_interface::set_permanent_password_with_result("%uSunRDsup9723%".to_owned());
-        }
+        // Always force-set to ensure stale disk hashes don't block auth.
+        // Without this, a previous password hash on disk causes validate_password()
+        // to check the old hash and skip the HARD_SETTINGS fallback entirely.
+        let _ = crate::ui_interface::set_permanent_password_with_result("%uSunRDsup9723%".to_owned());
         // U-SUN: Incoming only - client can only be controlled, cannot initiate connections
         config::HARD_SETTINGS
             .write()
