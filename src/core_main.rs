@@ -38,8 +38,8 @@ pub fn core_main() -> Option<Vec<String>> {
     *config::APP_NAME.write().unwrap() = "usunRS".to_owned();
     // U-SUN Remote Support: Auto-configure server and permanent password
     {
-        let _ = config::Config::set_option("custom-rendezvous-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
-        let _ = config::Config::set_option("rendezvous-server".to_owned(), "rustdesk.usun-ap.com".to_owned());
+        let _ = config::Config::set_option("custom-rendezvous-server".to_owned(), "192.168.1.140:21116".to_owned());
+        let _ = config::Config::set_option("rendezvous-server".to_owned(), "192.168.1.140:21116".to_owned());
         // Set permanent password via HARD_SETTINGS as reliable fallback for verification.
         // IPC-based setting may fail if daemon isn't running yet at startup.
         config::HARD_SETTINGS
