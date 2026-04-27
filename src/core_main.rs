@@ -59,6 +59,19 @@ pub fn core_main() -> Option<Vec<String>> {
         config::LocalConfig::set_option("pre-elevate-service".to_owned(), "Y".to_owned());
         // U-SUN: Embed server public key for verification (anti-MITM)
         let _ = config::Config::set_option("key".to_owned(), "QlcVL983xgzAIPvvRTpcAruLPeypkWHohEK64Hn0eKs=".to_owned());
+        // U-SUN: Lock settings - remove wallpaper, full access, direct IP access
+        config::OVERWRITE_SETTINGS
+            .write()
+            .unwrap()
+            .insert("allow-remove-wallpaper".to_owned(), "Y".to_owned());
+        config::OVERWRITE_SETTINGS
+            .write()
+            .unwrap()
+            .insert("access-mode".to_owned(), "full".to_owned());
+        config::OVERWRITE_SETTINGS
+            .write()
+            .unwrap()
+            .insert("direct-server".to_owned(), "Y".to_owned());
     }
     #[cfg(windows)]
     if !crate::platform::windows::bootstrap() {
