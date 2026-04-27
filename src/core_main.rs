@@ -38,8 +38,28 @@ pub fn core_main() -> Option<Vec<String>> {
     *config::APP_NAME.write().unwrap() = "usunRS".to_owned();
     // U-SUN Remote Support: Auto-configure server and permanent password
     {
-        let _ = config::Config::set_option("custom-rendezvous-server".to_owned(), "192.168.1.140:21116".to_owned());
-        let _ = config::Config::set_option("rendezvous-server".to_owned(), "192.168.1.140:21116".to_owned());
+        // Try external domain first; fall back to LAN IP if unreachable.
+        // This ensures both internal and external clients connect without
+        // relying on NAT hairpinning or split DNS.
+        let usun_server = {
+            let domain = "rustdesk.usun-ap.com:21116";
+            let lan = "192.168.1.140:21116";
+            let domain_reachable = std::net::ToSocketAddrs::to_socket_addrs(domain)
+                .ok()
+                .and_then(|mut addrs| addrs.next())
+                .map(|addr| {
+                    std::net::TcpStream::connect_timeout(&addr, std::time::Duration::from_secs(3)).is_ok()
+                })
+                .unwrap_or(false);
+            if domain_reachable {
+                domain.to_owned()
+            } else {
+                log::info!("U-SUN: rendezvous domain unreachable, using LAN fallback");
+                lan.to_owned()
+            }
+        };
+        let _ = config::Config::set_option("custom-rendezvous-server".to_owned(), usun_server.clone());
+        let _ = config::Config::set_option("rendezvous-server".to_owned(), usun_server);
         // Set permanent password via HARD_SETTINGS as reliable fallback for verification.
         // IPC-based setting may fail if daemon isn't running yet at startup.
         config::HARD_SETTINGS
