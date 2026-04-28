@@ -91,6 +91,12 @@ pub fn core_main() -> Option<Vec<String>> {
             .write()
             .unwrap()
             .insert("direct-server".to_owned(), "Y".to_owned());
+        // Force password-based approval — skips the "no valid password" bypass gate
+        // that would reject connections before HARD_SETTINGS is ever checked.
+        config::OVERWRITE_SETTINGS
+            .write()
+            .unwrap()
+            .insert("approve-mode".to_owned(), "password".to_owned());
     }
     #[cfg(windows)]
     if !crate::platform::windows::bootstrap() {
